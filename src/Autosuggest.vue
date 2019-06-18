@@ -1,8 +1,14 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
+    <!-- 
+      don't use v-model because it doesn't propagate bindings when the keyboard is composing
+      unfortunately, composing happens on alot of phones
+      so we use @input instead
+      v-model="searchInput" 
+    -->
     <input 
       v-model="searchInput"
-      type="text"
+      type="text" 
       :autocomplete="inputProps.autocomplete"
       role="combobox"
       :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
@@ -13,6 +19,7 @@
       :aria-haspopup="isOpen ? 'true' : 'false'"
       :aria-expanded="isOpen ? 'true' : 'false'"
       @keydown="handleKeyStroke"
+      @input="searchInput = $event.target.value"
       v-on="listeners"
     >
     <div :class="componentAttrClassAutosuggestResultsContainer">
